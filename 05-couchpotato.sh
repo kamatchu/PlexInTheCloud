@@ -106,11 +106,11 @@ mkdir /home/$username/$local/movies
 # Create our directory for completed downloads
 mkdir /home/$username/nzbget/completed/movies
 
-# Create our ACD directory
+# Create our GDRIVE directory
 ## Run the commands as our user since the rclone config is stored in the user's home directory and root can't access it.
 su $username <<EOF
 cd /home/$username
-rclone mkdir $encrypted:movies
+rclone mkdir $remote:movies
 EOF
 
 # Create our Plex library
@@ -121,7 +121,7 @@ echo 'Now you need to create your Plex TV Library.'
 echo '1) In a browser open https://app.plex.tv/web/app'
 echo '2) In the left hand side, click on "Add Library"'
 echo '3) Select "Movies", leave the default name, and choose your preferred language before clicking "Next"'
-echo "4) Click 'Browse for media folder' and navigate to /home/$username/$encrypted/movies"
+echo "4) Click 'Browse for media folder' and navigate to /home/$username/$remote/movies"
 echo '5) Click on the "Add" button and then click on "Add library"'
 echo ''
 
@@ -146,7 +146,7 @@ tee "/home/$username/nzbget/scripts/uploadMovies.sh" > /dev/null <<EOF
 sleep 10s
 
 # Upload
-rclone move -c /home/$username/$local/movies $encrypted:movies
+rclone move -c /home/$username/$local/movies $remote:movies
 
 # Tell Plex to update the Library
 wget http://localhost:32400/library/sections/$movieID/refresh?X-Plex-Token=$token

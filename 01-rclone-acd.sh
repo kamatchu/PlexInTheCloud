@@ -3,8 +3,6 @@ source vars
 
 ## INFO
 # This script installs and configures rclone.
-# Your Amazon Drive will be mounted on boot
-# and encrypted/decrypted on the fly.
 ##
 
 #######################
@@ -37,71 +35,32 @@ cat << EOF
 rclone config
 
     n       # New remote
-    AMZ     # name
-    1       # Choose "Amazon Drive"
+    GDRIVE  # name
+    1       # Choose "Google Drive"
             # press enter, leave blank for Client Id
             # press enter, leave blank for Client Secret
     n       # press n for headless setup
             # On your personal computer with rclone installed, type: rclone authorize "amazon cloud drive" (at a terminal prompt, quotes included in the command)
-            # Login to Amazon using the browser that rclone opened on your personal computer.
-            # Get the code from your Terminal window on your personal computer and copy-paste it to your remote server.
+            # Sign in to your Google account using the browser that rclone opened on your personal computer.
+            # Copy & paste the code that appears on the screen to your remote server.
     y       # to accept everything, "Yes this is OK"
     q       # Quit
 EOF
 
 echo ''
-echo "Did you add your rclone AMZ mount in previous step?"
+echo "Did you add your rclone GDRIVE mount in previous step?"
 echo ''
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) break;;
         No ) echo 'You need to do that before we can move on, exiting.'; exit;;
-    esac
-done
-
-cat << EOF
-# RCLONE ENCRYPT
-rclone config
-
-    n               # New remote
-    $encrypted      # name
-    5               # Choose "crypt"
-    AMZ             # remote name you set up previously + folder
-    2               # Choose "Encrypt the filenames"
-    g               # Choose "Generate random password"
-    128             # Strength of password
-    y               # Accept password (and write it down for backup!!!!)
-    g               # Choose "Generate random password" for salt
-    128             # Strength of salt
-    y               # Accept salt (and write it down for backup!!!!)
-    y               # Accept everything "Yes this is OK"
-    q               # Quit
-EOF
-
-echo ''
-echo "Did you add your rclone crypt mount in previous step?"
-echo ''
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) echo 'You need to do that before we can move on, exiting.'; exit;;
-    esac
-done
-
-echo ''
-echo "Did you back up/write down your password and salt?"
-echo ''
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) echo "It's your choice, but losing those means you'll be unable to recover any of your encrypted files."; break;;
     esac
 done
 
 #######################
 # Structure
 #######################
-mkdir -p /home/$username/$encrypted
+mkdir -p /home/$username/$remote
 mkdir -p /home/$username/$local
 mkdir -p /home/$username/$overlayfuse
 mkdir -p /home/$username/scripts
@@ -120,10 +79,10 @@ rclone mount \
     --no-check-certificate \
     --quiet \
     --stats 0 \
-    $encrypted: /home/$username/$encrypted/ & 
+    $remote: /home/$username/$remote/ & 
 
 sleep 3s
-unionfs-fuse -o cow,max_readahead=2000000000 /home/$username/$local=RW:/home/$username/$encrypted=RO /home/$username/$overlayfuse 
+unionfs-fuse -o cow,max_readahead=2000000000 /home/$username/$local=RW:/home/$username/$remote=RO /home/$username/$overlayfuse 
 EOF
 
 #######################
@@ -131,7 +90,7 @@ EOF
 #######################
 tee "/etc/systemd/system/rcloneMount.service" > /dev/null <<EOF
 [Unit]
-Description=Mount Amazon Cloud Drive
+Description=Mount Google Drive 
 Documentation=https://acd-cli.readthedocs.org/en/latest/
 After=network-online.target
 
@@ -139,7 +98,7 @@ After=network-online.target
 Type=forking
 User=$username
 ExecStart=/bin/bash /home/$username/scripts/rcloneMount.sh
-ExecStop=/bin/umount /home/$username/$encrypted 
+ExecStop=/bin/umount /home/$username/$remote 
 ExecStop=/bin/umount /home/$username/$overlayfuse
 Restart=on-abort
 
@@ -153,7 +112,7 @@ EOF
 chmod +x /home/$username/scripts
 chown -R $username:$username /home/$username/scripts
 chown -R $username:$username /home/$username/$local
-chown -R $username:$username /home/$username/$encrypted
+chown -R $username:$username /home/$username/$remote
 chown -R $username:$username /home/$username/$overlayfuse
 
 

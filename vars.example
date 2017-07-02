@@ -8,7 +8,7 @@ ipaddr=""
 timezone="America/Los_Angeles"
 
 # Rclone Crypt
-encrypted="AMZe"
+remote="AMZe"
 local="LOCAL"
 overlayfuse="ALL"
 

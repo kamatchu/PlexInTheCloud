@@ -83,7 +83,7 @@ mkdir -p /home/$username/nzbget/completed/tv
 ## Run the commands as our user since the rclone config is stored in the user's home directory and root can't access it.
 su $username <<EOF
 cd /home/$username
-rclone mkdir $encrypted:tv
+rclone mkdir $remote:tv
 EOF
 
 # Create our Plex library
@@ -94,7 +94,7 @@ echo 'Now you need to create your Plex TV Library.'
 echo '1) In a browser open https://app.plex.tv/web/app'
 echo '2) In the left hand side, click on "Add Library"'
 echo '3) Select "TV Shows", leave the default name, and choose your preferred language before clicking "Next"'
-echo "4) Click 'Browse for media folder' and navigate to /home/$username/$encrypted/tv"
+echo "4) Click 'Browse for media folder' and navigate to /home/$username/$remote/tv"
 echo '5) Click on the "Add" button and then click on "Add library"'
 echo ''
 
@@ -119,7 +119,7 @@ tee "/home/$username/nzbget/scripts/uploadTV.sh" > /dev/null <<EOF
 sleep 10s
 
 # Upload
-rclone move -c /home/$username/$local/tv $encrypted:tv
+rclone move -c /home/$username/$local/tv $remote:tv
 
 # Tell Plex to update the Library
 wget http://localhost:32400/library/sections/$tvID/refresh?X-Plex-Token=$token

@@ -43,7 +43,7 @@ sed -i "s/^chowner =.*/chowner = $username/g" /opt/mylar/config.ini
 sed -i "s/^chgroup =.*/chgroup = $username/g" /opt/mylar/config.ini
 sed -i "s/^usenet_retention =.*/usenet_retention = $nsRetention/g" /opt/mylar/config.ini
 sed -i "s/^nzb_startup_search =.*/nzb_startup_search = 1/g" /opt/mylar/config.ini
-sed -i "s|^comic_dir =.*|comic_dir = /home/$username/$encrypted/comics|g" /opt/mylar/config.ini
+sed -i "s|^comic_dir =.*|comic_dir = /home/$username/$remote/comics|g" /opt/mylar/config.ini
 sed -i "s/^dupeconstraint =.*/dupeconstraint = filetype-cbz/g" /opt/mylar/config.ini
 sed -i "s/^autowant_all =.*/autowant_all = 1/g" /opt/mylar/config.ini
 sed -i "s/^autowant_upcoming =.*/autowant_upcoming = 1/g" /opt/mylar/config.ini
@@ -99,7 +99,7 @@ mkdir /home/$username/nzbget/completed/comics
 ## Run the commands as our user since the rclone config is stored in the user's home directory and root can't access it.
 su $username <<EOF
 cd /home/$username
-rclone mkdir $encrypted:comics
+rclone mkdir $remote:comics
 EOF
 
 #######################
@@ -117,7 +117,7 @@ tee "/home/$username/nzbget/scripts/uploadComics.sh" > /dev/null <<EOF
 sleep 10s
 
 # Upload
-rclone move -c /home/$username/$local/comics $encrypted:comics
+rclone move -c /home/$username/$local/comics $remote:comics
 
 # Send PP Success code
 exit 93
