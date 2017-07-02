@@ -72,17 +72,16 @@ tee "/home/$username/scripts/rcloneMount.sh" > /dev/null <<EOF
 #!/bin/bash
 rclone mount \
     --read-only \
+    --allow-other \
     --allow-non-empty \
     --dir-cache-time 1m \
     --acd-templink-threshold 0\
-    --checkers 16 \
-    --no-check-certificate \
-    --quiet \
-    --stats 0 \
+    --stats 1s \
     $remote: /home/$username/$remote/ & 
 
 sleep 3s
-unionfs-fuse -o cow,max_readahead=2000000000 /home/$username/$local=RW:/home/$username/$remote=RO /home/$username/$overlayfuse 
+
+unionfs-fuse -o cow,allow_other,direct_io,auto_cache,sync_read /home/$username/$local=RW:/home/$username/$remote=RO /home/$username/$overlayfuse 
 EOF
 
 #######################
