@@ -48,11 +48,14 @@ echo $username:$passwd | chpasswd
 adduser $username sudo
 sed --in-place 's/^#\s*\(%sudo\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 
+# Modify permissions of FUSE
+# So our non-root user can access things
+chmod 666 /dev/fuse
+
 # Install & Configure SSH
 sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
 sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config
 echo 'AddressFamily inet' | sudo tee -a /etc/ssh/sshd_config
-
 
 # Install & Configure Fail2Ban
 apt-get -y install fail2ban
