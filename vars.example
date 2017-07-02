@@ -5,7 +5,6 @@ passwd="PASSWORD"
 # Networking
 hostname=""
 ipaddr=""
-fqdn="$hostname.members.linode.com"
 timezone="America/Los_Angeles"
 
 # Rclone Crypt
