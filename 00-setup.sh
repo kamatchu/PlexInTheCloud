@@ -30,7 +30,7 @@ echo "127.0.0.1  $hostname" >> /etc/hosts
 echo "127.0.0.1  localhost.localdomain   localhost" >> /etc/hosts
 
 # Set up automatic security updates
-apt install unattended-upgrades
+yes | apt install unattended-upgrades
 
 echo -e "APT::Periodic::Update-Package-Lists \"1\";\n\
 APT::Periodic::Download-Upgradeable-Packages \"1\";\n\
@@ -50,6 +50,7 @@ sed --in-place 's/^#\s*\(%sudo\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudo
 
 # Modify permissions of FUSE
 # So our non-root user can access things
+apt-get -y install fuse
 chmod 666 /dev/fuse
 sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
 
