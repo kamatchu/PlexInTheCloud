@@ -1,5 +1,5 @@
 # WHAT
-Run Plex in the cloud. Use rclone crypt to mount and encrypt/decrypt your (unlimited) Amazon Drive storage on the fly.
+Use rclone crypt to mount your Google Drive storage. Run Plex in the cloud.
 
 Easily install NZBGet, SickRage, CouchPotato, and Mylar with full post-processing enabled and configured.
 Easily install rTorrent/ruTorrent for downloading torrents. (Post-processing coming soon).
@@ -19,8 +19,8 @@ Once you have completed the GETTING STARTED section you can run any of the follo
 [Issues](https://github.com/chrisanthropic/PlexInTheCloud/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 # AVAILABLE SOFTWARE
-## Rclone / Crypt
-[Rclone](https://github.com/ncw/rclone) is an amazing piece of software that allows you to easily mount your cloud storage locally and encrypt/decrypt it on the fly (via Crypt)!
+## Rclone
+[Rclone](https://github.com/ncw/rclone) is an amazing piece of software that allows you to easily mount your cloud storage locally!
 
 ## PLEX
 Stream your personal media to any device with an internet connection.

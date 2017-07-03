@@ -19,6 +19,9 @@ echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf
 # Update and upgrade
 apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 
+# Enable multiverse repo
+sed -i '/.restricted universe main/ s/$/ multiverse/' /etc/apt/sources.list
+
 # Set hostname
 hostnamectl set-hostname $hostname
 
@@ -30,7 +33,7 @@ echo "127.0.0.1  $hostname" >> /etc/hosts
 echo "127.0.0.1  localhost.localdomain   localhost" >> /etc/hosts
 
 # Set up automatic security updates
-apt install unattended-upgrades
+yes | apt install unattended-upgrades
 
 echo -e "APT::Periodic::Update-Package-Lists \"1\";\n\
 APT::Periodic::Download-Upgradeable-Packages \"1\";\n\
@@ -48,11 +51,16 @@ echo $username:$passwd | chpasswd
 adduser $username sudo
 sed --in-place 's/^#\s*\(%sudo\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 
+# Modify permissions of FUSE
+# So our non-root user can access things
+apt-get -y install fuse
+chmod 666 /dev/fuse
+sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
+
 # Install & Configure SSH
 sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
 sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config
 echo 'AddressFamily inet' | sudo tee -a /etc/ssh/sshd_config
-
 
 # Install & Configure Fail2Ban
 apt-get -y install fail2ban
