@@ -16,7 +16,7 @@ fi
 #######################
 # Dependencies
 #######################
-apt-get install -y git-core libffi-dev libssl-dev zlib1g-dev libxslt1-dev libxml2-dev python python-pip python-dev build-essential
+apt-get install -y git-core libffi-dev libssl-dev zlib1g-dev libxslt1-dev libxml2-dev python python-pip python-dev build-essential curl
 
 pip install lxml cryptography pyopenssl
 
