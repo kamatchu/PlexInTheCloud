@@ -19,6 +19,9 @@ echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf
 # Update and upgrade
 apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 
+# Enable multiverse repo
+sed -i '/.restricted universe main/ s/$/ multiverse/' /etc/apt/sources.list
+
 # Set hostname
 hostnamectl set-hostname $hostname
 
