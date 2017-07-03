@@ -59,7 +59,7 @@ server {
 
 EOF
 
-ln -s /etc/nginx/sites-available/rutorrent /etc/nginx/sites-enabled/rutorrent
+ln -sfn /etc/nginx/sites-available/rutorrent /etc/nginx/sites-enabled/rutorrent
 systemctl restart nginx
 
 #######################
