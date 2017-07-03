@@ -51,6 +51,7 @@ sed --in-place 's/^#\s*\(%sudo\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudo
 # Modify permissions of FUSE
 # So our non-root user can access things
 chmod 666 /dev/fuse
+sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
 
 # Install & Configure SSH
 sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
