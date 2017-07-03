@@ -36,11 +36,10 @@ rclone config
 
     n       # New remote
     GDRIVE  # name
-    1       # Choose "Google Drive"
+    7       # Choose "Google Drive"
             # press enter, leave blank for Client Id
             # press enter, leave blank for Client Secret
     n       # press n for headless setup
-            # On your personal computer with rclone installed, type: rclone authorize "amazon cloud drive" (at a terminal prompt, quotes included in the command)
             # Sign in to your Google account using the browser that rclone opened on your personal computer.
             # Copy & paste the code that appears on the screen to your remote server.
     y       # to accept everything, "Yes this is OK"
