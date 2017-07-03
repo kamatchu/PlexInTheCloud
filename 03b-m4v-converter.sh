@@ -54,10 +54,11 @@ PATH="/root/bin:$PATH" make
 make install
 hash -r
 
-sudo apt autoremove
+# Cleanup
+apt-get -y autoremove
 
-## move the fucking binaries to /usr/bin/
-
+# Move the compiled binaries to /usr/bin so anyone can use them
+mv /root/bin/* /usr/bin/
 
 #######################
 # Install
