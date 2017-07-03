@@ -32,6 +32,7 @@ Stream your personal media to any device with an internet connection.
 ## NZBget
 - [NZBget](http://nzbget.net/) - usenet downloader | [http://localhost:6789](http://localhost:6789)
     - [nzbToMedia Post-Processing](https://github.com/clinton-hall/nzbToMedia) - decompress, rename, and move your files, automatically.
+    - [m4v-converter](https://github.com/Digiex/M4V-Converter) - converts all media to a format that Plex can play without transcoding / using Direct Play.
 
 ## CouchPotato
 - [CouchPotato](https://github.com/CouchPotato/CouchPotatoServer) - Search and track Movie downloads | [http://localhost:5050](http://localhost:5050)
