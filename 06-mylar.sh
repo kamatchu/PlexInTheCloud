@@ -77,13 +77,6 @@ sed -i "/\[NZBGet\]/,/^$/ s|nzbget_directory = .*|nzbget_directory = /home/$user
 ## NZBget
 sed -i "s|Category4.Name=comics.*$|&\nCategory4.DestDir=/home/$username/nzbget/completed/comics\nCategory4.PostScript=nzbToMylar.py, Logger.py, uploadComics.sh\n|g" /opt/nzbget/nzbget.conf
 
-# nzbToMylar
-sed -i 's/^nzbToMylar.py:auto_update=.*/nzbToMylar.py:auto_update=1/g' /opt/nzbget/nzbget.conf
-sed -i 's/^nzbToMylar.py:myCategory=.*/nzbToMylar.py:myCategory=comics/g' /opt/nzbget/nzbget.conf
-sed -i "s/^nzbToMylar.py:myusername=.*/nzbToMylar.py:myusername=$username/g" /opt/nzbget/nzbget.conf
-sed -i "s/^nzbToMylar.py:mypassword=.*/nzbToMylar.py:mypassword=$passwd/g" /opt/nzbget/nzbget.conf
-sed -i "s|^nzbToMylar.py:mywatch_dir=.*|nzbToMylar.py:mywatch_dir=/home/$username/nzbget/completed/comics|g" /opt/nzbget/nzbget.conf
-
 #######################
 # Structure
 #######################
