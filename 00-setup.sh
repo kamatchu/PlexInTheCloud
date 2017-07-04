@@ -26,7 +26,7 @@ sed -i '/.restricted universe main/ s/$/ multiverse/' /etc/apt/sources.list
 hostnamectl set-hostname $hostname
 
 # Set Timezone
-timedatectl set-timezone $timezone
+ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 
 # Update hosts file
 echo "127.0.0.1  $hostname" >> /etc/hosts
