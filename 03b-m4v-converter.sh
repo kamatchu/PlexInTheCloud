@@ -74,6 +74,13 @@ cd "$here"
 #######################
 # Configure
 #######################
+sed -i 's/^#Verbose=.*/Verbose=true/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
+sed -i 's/^#Languages=.*/Languages=eng/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
+sed -i 's/^#Preset=.*/Preset=slow/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
+sed -i 's/^#Profile=.*/Profile=high/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
+sed -i 's/^#Level=.*/Level=5.0/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
+sed -i 's/^#Extension=.*/Extension=mp4/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
+sed -i 's/^#Delete=.*/Delete=true/g' /home/$username/nzbget/scripts/m4v-converter/M4V-Converter.sh
 
 #######################
 # Permissions
