@@ -57,8 +57,7 @@ sed -i "s/^delete_failed =.*/delete_failed = 1/g" /opt/sickrage/config.ini
 ## Post-Processing
 # nzbget
 sed -i "s/^Category2.Name=.*/Category2.Name=tv/g" /opt/nzbget/nzbget.conf
-sed -i "s|^Category2.DestDir=.*|Category2.DestDir=/home/$username/nzbget/completed/tv|g" /opt/nzbget/nzbget.conf
-sed -i "s/^Category2.PostScript=.*/Category2.PostScript=nzbToSickBeard.py, Logger.py, uploadTV.sh/g" /opt/nzbget/nzbget.conf
+sed -i "s|Category2.Name=tv.*$|&\nCategory2.DestDir=/home/$username/nzbget/completed/tv\nCategory2.Extenstions=m4v-converter/M4V-Converter.sh, nzbToSickBeard.py, Logger.py, uploadTV.sh\n|g" /opt/nzbget/nzbget.conf
 
 # nzbToSickBeard
 sed -i 's/^nzbToSickBeard.py:auto_update=.*/nzbToSickBeard.py:auto_update=1/g' /opt/nzbget/nzbget.conf
