@@ -34,16 +34,6 @@ EOF
 #######################
 # Configure
 #######################
-## Write CouchPotato API to nzbget.conf so it can send post-processing requests
-### Copy the api key from the CP config file
-cpAPI=$(cat /home/$username/.couchpotato/settings.conf | grep "api_key = ................................" | cut -d= -f 2)
-
-### Cut the single blank space that always gets added to the front of $cpAPI
-cpAPInew="$(sed -e 's/[[:space:]]*$//' <<<${cpAPI})"
-
-### Write the API key to nzbget.conf
-sed -i "s/^nzbToCouchPotato.py:cpsapikey=.*/nzbToCouchPotato.py:cpsapikey=$cpAPInew/g" /opt/nzbget/nzbget.conf
-
 ## Configure CouchPotato
 ### CouchPotato stores our passwords as md5sum hashes...heh heh heh
 cppassword=$(echo -n $passwd | md5sum | cut -d ' ' -f 1)
@@ -82,20 +72,11 @@ sed -i '/\[renamer\]/,/^$/ s/force_every = .*/force_every = 24/' /home/$username
 sed -i '/\[kickasstorrents\]/,/^$/ s/enabled = .*/enabled = False/' /home/$username/.couchpotato/settings.conf
 sed -i '/\[torrentz\]/,/^$/ s/enabled = .*/enabled = False/' /home/$username/.couchpotato/settings.conf
 
-
 ## Post Processing
 ## NZBget
 sed -i "s/^Category1.Name=.*/Category1.Name=movies/g" /opt/nzbget/nzbget.conf
 sed -i "s|^Category1.DestDir=.*|Category1.DestDir=/home/$username/nzbget/completed/movies|g" /opt/nzbget/nzbget.conf
-sed -i "s/^Category1.PostScript=.*/Category1.Extensions=m4v-converter/M4V-Converter.sh, nzbToCouchPotato.py, Logger.py, uploadMovies.sh/g" /opt/nzbget/nzbget.conf
-
-# nzbToCouchPotato
-sed -i 's/^nzbToCouchPotato.py:auto_update=.*/nzbToCouchPotato.py:auto_update=1/g' /opt/nzbget/nzbget.conf
-sed -i 's/^nzbToCouchPotato.py:cpsCategory=.*/nzbToCouchPotato.py:cpsCategory=movies/g' /opt/nzbget/nzbget.conf
-sed -i 's/^nzbToCouchPotato.py:cpsdelete_failed=.*/nzbToCouchPotato.py:cpsdelete_failed=1/g' /opt/nzbget/nzbget.conf
-sed -i 's/^nzbToCouchPotato.py:getSubs=.*/nzbToCouchPotato.py:getSubs=1/g' /opt/nzbget/nzbget.conf
-sed -i "s/^nzbToCouchPotato.py:subLanguages=.*/nzbToCouchPotato.py:subLanguages=$openSubtitlesLang/g" /opt/nzbget/nzbget.conf
-sed -i "s|^nzbToCouchPotato.py:cpswatch_dir=.*|nzbToCouchPotato.py:cpswatch_dir=/home/$username/nzbget/completed/movies|g" /opt/nzbget/nzbget.conf
+sed -i "s|^Category1.Extensions=.*|Category1.Extensions=m4v-converter/M4V-Converter.sh, nzbToCouchPotato.py, Logger.py, uploadMovies.sh|g" /opt/nzbget/nzbget.conf
 
 #######################
 # Structure
