@@ -27,6 +27,7 @@ Stream your personal media to any device with an internet connection.
 - Plex | IP:32400/web
   - [PlexPy](https://github.com/JonnyWong16/plexpy) - Monitoring for Plex | [http://localhost:8181](http://localhost:8181)
   - [PlexRequests](https://github.com/lokenx/plexrequests-meteor) - Allow users to request movies/tv episodes and automatically download them | [http://localhost:3000](http://localhost:3000)
+  - [PlexUpdates](https://github.com/mrworf/plexupdate) - Checks daily for Plex software updates and updates it if there is one.
   - [ComicReader PlexChannel](https://github.com/coryo/ComicReader.bundle) - A way to read comics via plex. 'Functional' but very slow for now.
 
 ## NZBget
