@@ -87,7 +87,7 @@ sed -i '/\[torrentz\]/,/^$/ s/enabled = .*/enabled = False/' /home/$username/.co
 ## NZBget
 sed -i "s/^Category1.Name=.*/Category1.Name=movies/g" /opt/nzbget/nzbget.conf
 sed -i "s|^Category1.DestDir=.*|Category1.DestDir=/home/$username/nzbget/completed/movies|g" /opt/nzbget/nzbget.conf
-sed -i "s/^Category1.PostScript=.*/Category1.PostScript=nzbToCouchPotato.py, Logger.py, uploadMovies.sh/g" /opt/nzbget/nzbget.conf
+sed -i "s/^Category1.PostScript=.*/Category1.Extensions=m4v-converter/M4V-Converter.sh, nzbToCouchPotato.py, Logger.py, uploadMovies.sh/g" /opt/nzbget/nzbget.conf
 
 # nzbToCouchPotato
 sed -i 's/^nzbToCouchPotato.py:auto_update=.*/nzbToCouchPotato.py:auto_update=1/g' /opt/nzbget/nzbget.conf
