@@ -63,6 +63,14 @@ sed -i "s/^#sbusername=.*/sbusername=$username/g" /home/$username/nzbget/scripts
 sed -i "s/^#sbpassword=.*/sbpassword=$passwd/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
 sed -i "s|^#sbwatch_dir=.*|sbwatch_dir=/home/$username/nzbget/completed/tv|g" /home/$username/nzbget/scripts/nzbToSickBeard.py
 
+## Mylar
+# nzbToMylar
+sed -i 's/^#auto_update=.*/auto_update=1/g' /home/$username/nzbget/scripts/nzbToMylar.py
+sed -i 's/^#myCategory=.*/myCategory=comics/g' /home/$username/nzbget/scripts/nzbToMylar.py
+sed -i "s/^#myusername=.*/myusername=$username/g" /home/$username/nzbget/scripts/nzbToMylar.py
+sed -i "s/^#mypassword=.*/mypassword=$passwd/g" /home/$username/nzbget/scripts/nzbToMylar.py
+sed -i "s|^#mywatch_dir=.*|mywatch_dir=/home/$username/nzbget/completed/comics|g" /home/$username/nzbget/scripts/nzbToMylar.py
+
 #######################
 # Permissions
 #######################
