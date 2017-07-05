@@ -34,42 +34,75 @@ cd "$here"
 cp /opt/nzbget/scripts/* /home/$username/nzbget/scripts/
 cp /home/$username/nzbget/scripts/autoProcessMedia.cfg.spec /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
-## CouchPotato
-## Write CouchPotato API to nzbget.conf so it can send post-processing requests
+# Turn on nzbToMedia auto_update
+sed -i '/\[General\]/,/^$/ s/auto_update = .*/auto_update = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+# nzbToCouchPotato Post-Processing Settings
+## Change the default category from movie to movies
+sed -i '/\[CouchPotato\]/,/^$/ s/\[\[movie\]\]/\[\[movies\]\]/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Enable CouchPotato post-processing
+sed -i '/\[\[movies\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Add your CouchPotato API key
 ### Copy the api key from the CP config file
 cpAPI=$(cat /home/$username/.couchpotato/settings.conf | grep "api_key = ................................" | cut -d= -f 2)
 
-### Cut the single blank space that always gets added to the front of $cpAPI
-cpAPInew="$(sed -e 's/[[:space:]]*$//' <<<${cpAPI})"
+### This is some crazy bash black magic that will return only the first string of our variable
+### It's needed since my creation of the cpAPI var isn't perfect and returns too much cruft
+set -- $cpAPI
 
 ### Write the API key to nzbget.conf
-sed -i "s/^#cpsapikey=.*/cpsapikey=$cpAPInew/g" /home/$username/nzbget/scripts/nzbToCouchPotato.py
+sed -i "/\[\[movies\]\]/,/^$/ s/apikey = .*/apikey = $1/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
-# Basic defaults to get post-processing working
-sed -i 's/^#auto_update=.*/auto_update=1/g' /home/$username/nzbget/scripts/nzbToCouchPotato.py
-sed -i 's/^#cpsCategory=.*/cpsCategory=movies/g' /home/$username/nzbget/scripts/nzbToCouchPotato.py
-sed -i 's/^#cpsdelete_failed=.*/cpsdelete_failed=1/g' /home/$username/nzbget/scripts/nzbToCouchPotato.py
-sed -i 's/^#getSubs=.*/getSubs=1/g' /home/$username/nzbget/scripts/nzbToCouchPotato.py
-sed -i "s/^#subLanguages=.*/subLanguages=$openSubtitlesLang/g" /home/$username/nzbget/scripts/nzbToCouchPotato.py
-sed -i "s|^#cpswatch_dir=.*|cpswatch_dir=/home/$username/nzbget/completed/movies|g" /home/$username/nzbget/scripts/nzbToCouchPotato.py
+### More bash black magic to unset the earlier black magic stuff
+shift && shift && shift
 
-## Sickrage
-sed -i 's/^#auto_update=.*/auto_update=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i 's/^#sbCategory=.*/sbCategory=tv/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i 's/^#sbdelete_failed=.*/sbdelete_failed=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i 's/^#getSubs=.*/getSubs=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i "s/^#subLanguages=.*/subLanguages=$openSubtitlesLang/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i "s/^#sbusername=.*/sbusername=$username/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i "s/^#sbpassword=.*/sbpassword=$passwd/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-sed -i "s|^#sbwatch_dir=.*|sbwatch_dir=/home/$username/nzbget/completed/tv|g" /home/$username/nzbget/scripts/nzbToSickBeard.py
+## Delete Failed
+sed -i '/\[\[movies\]\]/,/^$/ s/delete_failed = .*/delete_failed = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
-## Mylar
-# nzbToMylar
-sed -i 's/^#auto_update=.*/auto_update=1/g' /home/$username/nzbget/scripts/nzbToMylar.py
-sed -i 's/^#myCategory=.*/myCategory=comics/g' /home/$username/nzbget/scripts/nzbToMylar.py
-sed -i "s/^#myusername=.*/myusername=$username/g" /home/$username/nzbget/scripts/nzbToMylar.py
-sed -i "s/^#mypassword=.*/mypassword=$passwd/g" /home/$username/nzbget/scripts/nzbToMylar.py
-sed -i "s|^#mywatch_dir=.*|mywatch_dir=/home/$username/nzbget/completed/comics|g" /home/$username/nzbget/scripts/nzbToMylar.py
+## Set the watch directory
+sed -i "
+   /^\[CouchPotato]$/,/^$/!b
+   /^[[:blank:]]\{4\}\[\[movies]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/movies|
+" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+
+# nzbToSickbeard Post-Processing Settings
+## Enable CouchPotato post-processing
+sed -i '/\[\[tv\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Username
+sed -i "/\[\[tv\]\]/,/^$/ s/username = .*/username = $username/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Password
+sed -i "/\[\[tv\]\]/,/^$/ s/password = .*/password = $passwd/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Delete Failed
+sed -i '/\[\[tv\]\]/,/^$/ s/delete_failed = .*/delete_failed = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set the watch directory
+sed -i "
+   /^\[SickBeard]$/,/^$/!b
+   /^[[:blank:]]\{4\}\[\[tv]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/tv|
+" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+
+# nzbToMylar Post-Processing Settings
+## Enable Mylar post-processing
+sed -i '/\[\[comics\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Username
+sed -i "/\[\[comics\]\]/,/^$/ s/username = .*/username = $username/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Password
+sed -i "/\[\[comics\]\]/,/^$/ s/password = .*/password = $passwd/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set the watch directory
+sed -i "
+   /^\[Mylar]$/,/^$/!b
+   /^[[:blank:]]\{4\}\[\[comics]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/comics|
+" /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 #######################
 # Permissions
