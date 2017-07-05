@@ -69,13 +69,6 @@ sed -i "
 
 
 # nzbToSickbeard Post-Processing Settings
-#sed -i 's/^#sbdelete_failed=.*/sbdelete_failed=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
-#sed -i 's/^#getSubs=.*/getSubs=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
-#sed -i "s/^#subLanguages=.*/subLanguages=$openSubtitlesLang/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-#sed -i "s/^#sbusername=.*/sbusername=$username/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-#sed -i "s/^#sbpassword=.*/sbpassword=$passwd/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-#sed -i "s|^#sbwatch_dir=.*|sbwatch_dir=/home/$username/nzbget/completed/tv|g" /home/$username/nzbget/scripts/nzbToSickBeard.py
-
 ## Enable CouchPotato post-processing
 sed -i '/\[\[tv\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
