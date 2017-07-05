@@ -68,6 +68,32 @@ sed -i "
 " /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 
+# nzbToSickbeard Post-Processing Settings
+#sed -i 's/^#sbdelete_failed=.*/sbdelete_failed=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
+#sed -i 's/^#getSubs=.*/getSubs=1/g' /home/$username/nzbget/scripts/nzbToSickBeard.py
+#sed -i "s/^#subLanguages=.*/subLanguages=$openSubtitlesLang/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
+#sed -i "s/^#sbusername=.*/sbusername=$username/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
+#sed -i "s/^#sbpassword=.*/sbpassword=$passwd/g" /home/$username/nzbget/scripts/nzbToSickBeard.py
+#sed -i "s|^#sbwatch_dir=.*|sbwatch_dir=/home/$username/nzbget/completed/tv|g" /home/$username/nzbget/scripts/nzbToSickBeard.py
+
+## Enable CouchPotato post-processing
+sed -i '/\[\[tv\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Username
+sed -i "/\[\[tv\]\]/,/^$/ s/username = .*/username = $username/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Password
+sed -i "/\[\[tv\]\]/,/^$/ s/password = .*/password = $passwd/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Delete Failed
+sed -i '/\[\[tv\]\]/,/^$/ s/delete_failed = .*/delete_failed = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set the watch directory
+sed -i "
+   /^\[SickBeard]$/,/^$/!b
+   /^[[:blank:]]\{4\}\[\[tv]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/tv|
+" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
 #######################
 # Permissions
 #######################
