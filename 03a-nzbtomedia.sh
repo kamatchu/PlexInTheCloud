@@ -87,6 +87,23 @@ sed -i "
    /^[[:blank:]]\{4\}\[\[tv]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/tv|
 " /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
+
+# nzbToMylar Post-Processing Settings
+## Enable Mylar post-processing
+sed -i '/\[\[comics\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Username
+sed -i "/\[\[comics\]\]/,/^$/ s/username = .*/username = $username/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set Password
+sed -i "/\[\[comics\]\]/,/^$/ s/password = .*/password = $passwd/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
+## Set the watch directory
+sed -i "
+   /^\[Mylar]$/,/^$/!b
+   /^[[:blank:]]\{4\}\[\[comics]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/comics|
+" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+
 #######################
 # Permissions
 #######################
