@@ -42,7 +42,7 @@ After=rcloneMount.service
 User=$username
 Group=$username
 WorkingDirectory=/opt/ubooquity
-ExecStart=/usr/bin/java -jar /opt/ubooquity/Ubooquity.jar -headless -webadmin
+ExecStart=/usr/bin/java -jar /opt/ubooquity/Ubooquity.jar -headless
 Restart=always
 
 [Install]
