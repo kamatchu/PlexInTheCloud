@@ -28,7 +28,10 @@ rm ubooquity.zip
 #######################
 # Structure
 #######################
-rclone mkdir $encrypted:comics
+su $username <<EOF
+cd /home/$username
+rclone mkdir $remote:comics
+EOF
 
 #######################
 # Systemd Service File
@@ -73,7 +76,16 @@ echo "Would you like us to open the port in UFW?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) ufw allow 2202; echo ''; echo "Port 2202 open, Ubooquity is now available over the internet at $ipaddr:2202/admin."; echo ''; break;;
-        No ) echo "Port 2202 left closed. You can still access it on your local machine by issuing the following command: ssh $username@$ipaddr -L 2202:localhost:2202"; echo "and then open localhost:2202 on your browser."; exit;;
+        No ) echo "Port 2202 left closed. You can still access it on your local machine by issuing the following command: ssh $username@$ipaddr -L 2202:localhost:2202"; echo "and then open localhost:2202 on your browser."; break;;
+    esac
+done
+
+echo "We also need to open port 2203 for the admin dashboard."
+echo "Would you like us to open the port in UFW?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) ufw allow 2203; echo ''; echo "Port 2203 open, Ubooquity admin page is now available over the internet at $ipaddr:2203/admin."; echo ''; break;;
+        No ) echo "Port 2203 left closed. You can still access it on your local machine by issuing the following command: ssh $username@$ipaddr -L 2203:localhost:2203"; echo "and then open localhost:2203 on your browser."; exit;;
     esac
 done
 
