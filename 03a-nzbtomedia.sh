@@ -39,10 +39,10 @@ sed -i '/\[General\]/,/^$/ s/auto_update = .*/auto_update = 1/' /home/$username/
 
 # nzbToCouchPotato Post-Processing Settings
 ## Change the default category from movie to movies
-sed -i '/\[CouchPotato\]/,/^$/ s/\[\[movie\]\]/\[\[movies\]\]/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+#sed -i '/\[CouchPotato\]/,/^$/ s/\[\[movie\]\]/\[\[movies\]\]/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 ## Enable CouchPotato post-processing
-sed -i '/\[\[movies\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+sed -i '/\[\[movie\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 ## Add your CouchPotato API key
 ### Copy the api key from the CP config file
@@ -53,18 +53,18 @@ cpAPI=$(cat /home/$username/.couchpotato/settings.conf | grep "api_key = .......
 set -- $cpAPI
 
 ### Write the API key to nzbget.conf
-sed -i "/\[\[movies\]\]/,/^$/ s/apikey = .*/apikey = $1/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
+sed -i "/\[\[movie\]\]/,/^$/ s/apikey = .*/apikey = $1/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 ### More bash black magic to unset the earlier black magic stuff
 shift && shift && shift
 
 ## Delete Failed
-sed -i '/\[\[movies\]\]/,/^$/ s/delete_failed = .*/delete_failed = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
+sed -i '/\[\[movie\]\]/,/^$/ s/delete_failed = .*/delete_failed = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 ## Set the watch directory
 sed -i "
    /^\[CouchPotato]$/,/^$/!b
-   /^[[:blank:]]\{4\}\[\[movies]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/movies|
+   /^[[:blank:]]\{4\}\[\[movie]]/,/^$/s|^\([[:blank:]]\{8\}watch_dir\) = .*|\1 = /home/$username/nzbget/completed/movies|
 " /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 

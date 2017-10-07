@@ -47,7 +47,7 @@ sed -i '/\[blackhole\]/,/^$/ s/enabled = .*/enabled = 0/' /home/$username/.couch
 sed -i '/\[nzbget\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/.couchpotato/settings.conf
 sed -i "/\[nzbget\]/,/^$/ s/password = .*/password = $passwd/" /home/$username/.couchpotato/settings.conf
 sed -i "/\[nzbget\]/,/^$/ s/username = .*/username = $username/" /home/$username/.couchpotato/settings.conf
-sed -i "/\[nzbget\]/,/^$/ s/category = .*/category = movies/" /home/$username/.couchpotato/settings.conf
+sed -i "/\[nzbget\]/,/^$/ s/category = .*/category = movie/" /home/$username/.couchpotato/settings.conf
 
 ### nzb
 sed -i "s/^retention =.*/retention = $nsRetention/g" /home/$username/.couchpotato/settings.conf
@@ -74,7 +74,7 @@ sed -i '/\[torrentz\]/,/^$/ s/enabled = .*/enabled = False/' /home/$username/.co
 
 ## Post Processing
 ## NZBget
-sed -i "s/^Category1.Name=.*/Category1.Name=movies/g" /opt/nzbget/nzbget.conf
+sed -i "s/^Category1.Name=.*/Category1.Name=movie/g" /opt/nzbget/nzbget.conf
 sed -i "s|^Category1.DestDir=.*|Category1.DestDir=/home/$username/nzbget/completed/movies|g" /opt/nzbget/nzbget.conf
 sed -i "s|^Category1.Extensions=.*|Category1.Extensions=m4v-converter/M4V-Converter.sh, nzbToCouchPotato.py, Logger.py, uploadMovies.sh|g" /opt/nzbget/nzbget.conf
 
