@@ -105,7 +105,7 @@ tee "/etc/systemd/system/nzbget.service" > /dev/null <<EOF
 [Unit]
 Description=NZBGet Daemon
 Documentation=http://nzbget.net/Documentation
-After=rcloneMount.service
+After=plexdrive5.service
 RequiresMountsFor=/mnt/usbstorage
 
 [Service]

@@ -39,7 +39,7 @@ EOF
 tee "/etc/systemd/system/ubooquity.service" > /dev/null <<EOF
 [Unit]
 Description=Ubooquity
-After=rcloneMount.service
+After=plexdrive5.service
 
 [Service]
 User=$username

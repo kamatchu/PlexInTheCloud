@@ -123,7 +123,7 @@ EOF
 tee "/etc/systemd/system/sickrage.service" > /dev/null <<EOF
 [Unit]
 Description=SickRage Daemon
-After=rcloneMount.service
+After=plexdrive5.service
 
 [Service]
 User=$username

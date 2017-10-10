@@ -142,7 +142,7 @@ EOF
 tee "/etc/systemd/system/couchpotato.service" > /dev/null <<EOF
 [Unit]
 Description=CouchPotato application instance
-After=rcloneMount.service
+After=plexdrive5.service
 
 [Service]
 ExecStart=/opt/couchpotato/CouchPotato.py
