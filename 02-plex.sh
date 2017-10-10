@@ -36,7 +36,7 @@ mkdir -p /etc/systemd/system/plexmediaserver.service.d
 tee "/etc/systemd/system/plexmediaserver.service.d/local.conf" > /dev/null <<EOF
 [Unit]
 Description= Start Plexmediaserver as our user, and don't do it until our mount script has finished.
-After=rcloneMount.service
+After=plexdrive5.service
 
 [Service]
 User=$username
