@@ -46,17 +46,10 @@ sed -i '/\[\[movie\]\]/,/^$/ s/enabled = .*/enabled = 1/' /home/$username/nzbget
 
 ## Add your CouchPotato API key
 ### Copy the api key from the CP config file
-cpAPI=$(cat /home/$username/.couchpotato/settings.conf | grep "api_key = ................................" | cut -d= -f 2)
-
-### This is some crazy bash black magic that will return only the first string of our variable
-### It's needed since my creation of the cpAPI var isn't perfect and returns too much cruft
-set -- $cpAPI
+cpAPI=$(cat /home/$username/.couchpotato/settings.conf | grep "api_key = ................................" | cut -d, -f2 | grep "api_key = ................................" | cut -d= -f2)
 
 ### Write the API key to nzbget.conf
-sed -i "/\[\[movie\]\]/,/^$/ s/apikey = .*/apikey = $1/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
-
-### More bash black magic to unset the earlier black magic stuff
-shift && shift && shift
+sed -i "/\[\[movie\]\]/,/^$/ s/apikey = .*/apikey = $cpAPI/" /home/$username/nzbget/scripts/autoProcessMedia.cfg
 
 ## Delete Failed
 sed -i '/\[\[movie\]\]/,/^$/ s/delete_failed = .*/delete_failed = 1/' /home/$username/nzbget/scripts/autoProcessMedia.cfg
