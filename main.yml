@@ -1,0 +1,22 @@
+---
+- hosts: default
+  vars_files:
+    - [ "roles/vars/main.yml" ]
+
+  tasks:
+    - import_tasks: roles/tasks/base.yml
+#    - include: tasks/automatic-upgrades.yml
+#    - include: tasks/rclone.yml
+#    - include: tasks/plex.yml
+#    - include: tasks/plexpy.yml
+#    - include: tasks/pexrequests.yml
+#    - include: tasks/plexupdate.yml
+#    - include: tasks/nzbget.yml
+#    - include: tasks/nzbtomedia.yml
+#    - include: tasks/m4v-converter.yml
+#    - include: tasks/sickrage.yml
+#    - include: tasks/couchpotato.yml
+#    - include: tasks/mylar.yml
+#    - include: tasks/ubooquity.yml
+#    - include: tasks/rtorrent.yml
+#    - include: tasks/rutorrent.yml

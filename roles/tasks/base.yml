@@ -1,0 +1,113 @@
+---
+- name: Stop apt-get from hanging on security updates
+  lineinfile:
+    path: /etc/gai.conf
+    line: precedence ::ffff:0:0/96 100
+
+- name: Install Aptitude
+  become: true
+  apt:
+    name: aptitude
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+
+#- name: Enable Multiverse Repo
+#  apt_repository:
+#    repo: deb http://archive.ubuntu.com/ubuntu xenial restricted universe main multiverse
+#    state: present
+
+#- name: Enable Security Repo
+#  apt_repository:
+#    repo: deb http://security.ubuntu.com/ubuntu xenial-security main restricted universe multiverse
+#    state: present
+
+- name: Set Hostname
+  hostname:
+    name: "{{ hostname }}"
+
+# Docker /etc/hosts workaround
+# http://blog.jonathanargentiero.com/docker-sed-cannot-rename-etcsedl8ysxl-device-or-resource-busy/
+- name: Copy original /etc/hosts file
+  command: cp /etc/hosts ~/hosts.new
+  args:
+    creates: ~/hosts.new
+  register: myhostname
+
+- name: Add hostname to /etc/hosts
+  lineinfile:
+    path: ~/hosts.new
+    line: "127.0.0.1 localhost.localdomain {{ hostname }}"
+  when: myhostname.changed == true
+
+- name: Copy new /etc/hosts file over original
+  shell: cp -f ~/hosts.new /etc/hosts
+  when: myhostname.changed == true
+
+- name: Set Time Zone
+  copy: content="{{ timezone }}"
+    dest=/etc/timezone
+    owner=root
+    group=root
+    mode=0644
+    backup=yes
+
+- name: Install unattended-upgrades package
+  apt:
+    name: unattended-upgrades
+    state: latest
+
+- name: Set automatic unattended security updates
+  copy:
+    content: |
+       APT::Periodic::Update-Package-Lists "1";
+       APT::Periodic::Download-Upgradeable-Packages "1";
+       APT::Periodic::AutocleanInterval "7";
+       APT::Periodic::Unattended-Upgrade "1";
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+
+- name: Create User
+  user:
+    name: "{{ username }}"
+    password: "{{ password |password_hash('sha512') }}"
+    update_password: on_create
+    shell: /bin/bash
+    groups: 
+      - sudo
+
+- name: Update /etc/sudoers
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo\s'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+
+#- name: Set authorized key took from file
+#  authorized_key:
+#    user: "{{ username }}"
+#    state: present
+#    key: "{{ lookup('file', '/home/{{ username }}/.ssh/id_rsa.pub') }}"
+
+- name: Install fuse
+  apt:
+    name: fuse
+    state: latest
+
+- name: Set permissions for /dev/fuse
+  file:
+    path: /dev/fuse
+    state: file
+    mode: 0666
+
+- name: Configure Fuse
+  lineinfile:
+    path: /etc/fuse.conf
+    state: present
+    regexp: '^user_allow_other\s'
+    line: 'user_allow_other'

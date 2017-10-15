@@ -1,0 +1,1 @@
+$YOUR.EXAMPLE.COM ansible_become=true ansible_host=$YOUR_IP ansible_user=$YOUR_USERNAME ansible_become_pass=$YOUR_SUDO_PASS 
